@@ -13,16 +13,13 @@ class GraphNode;
 class ChatLogic
 {
 private:
-    // data handles (not owned)
-    GraphNode *_currentNode;
-    ChatBot *_chatBot;
-    ChatBotPanelDialog *_panelDialog;
 
     // data handles (owned)
-    std::vector<std::unique_ptr<GraphNode >> _nodes;
-    std::vector<GraphEdge* > _edges;
-    // std::vector<GraphNode *> _nodes;
-    // std::vector<GraphEdge *> _edges;
+    // unique_ptr that ensures _nodes is exclusive to ChatLogic - since we used smart pointer, we do not need to worry about memmory management. The destructor will de-allocate the memory occupied by _nodes when it goes out of scope.
+    std::vector<std::unique_ptr<GraphNode>> _nodes;
+    
+   std::vector<GraphEdge *> _edges;
+   //std::vector<std::unique_ptr<GraphEdge>> _edges; 
 
     // data handles (not owned)
     GraphNode *_currentNode;

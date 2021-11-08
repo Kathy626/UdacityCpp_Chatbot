@@ -42,44 +42,26 @@ ChatBot::~ChatBot()
     }
 }
 
-ChatBot::ChatBot(const ChatBot &other) //copy cınstructor
-{
-    std::cout << "ChatBot Copy Constructor ," << "Address = " << this << std::endl;
+ChatBot::ChatBot(const ChatBot &source) {
+  
+  std::cout << "ChatBot Copy Constructor (2)" << std::endl;
 
-    _chatLogic = other._chatLogic;
-    _rootNode = other._rootNode;
-    if (_image != NULL) 
-    {
-        delete _image;
-        _image = NULL;
-    }
-    // load image into heap memory
-    _image = new wxBitmap(*other._image);
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+
+    _image = new wxBitmap();
+    *_image = *source._image;
 }
-ChatBot::ChatBot(const ChatBot &&other) //move constructor
-{
-    std::cout << "ChatBot Move Constructor ," << "Address = " << this << std::endl;
 
-    _chatLogic = (other._chatLogic);
-    _rootNode = (other._rootNode);
-    if (_image != NULL) 
-    {
-        delete _image;
-        _image = NULL;
-    }
-    // load image into heap memory
+ChatBot &ChatBot::operator=(const ChatBot &source) {
+  
+    std::cout << "ChatBot Copy Assignment Operator (3)" << std::endl;
 
-    _image = new wxBitmap(*other._image);
-}
-ChatBot &ChatBot::operator=(const ChatBot &other) //copy assignment operator
-{
-
-    std::cout << "ChatBot Copy Assignment Operator ," << "Address = " << this << std::endl;
-
-    if (this == &other)
-    {
+    if (this == &source)
         return *this;
-    }
+  
     delete _image;
     _image = new wxBitmap();
     *_image = *source._image;
@@ -90,9 +72,10 @@ ChatBot &ChatBot::operator=(const ChatBot &other) //copy assignment operator
     _currentNode = source._currentNode;
     return *this;
 }
+
 ChatBot::ChatBot(ChatBot &&source) {
 
-  std::cout << "ChatBot #2 Move constructor ," << "Address = " << this << std::endl;
+  std::cout << "ChatBot Move constructor (4)" << std::endl;
 
     _chatLogic = source._chatLogic;
     _chatLogic->SetChatbotHandle(this);
@@ -106,12 +89,13 @@ ChatBot::ChatBot(ChatBot &&source) {
     source._image = NULL;
 }
 
-ChatBot &ChatBot::operator=(const ChatBot &&other) //move assignment operator
-{
-    std::cout << "ChatBot Move Assignment Operator ," << "Address = " << this << std::endl;
-    if (this == &source){
+
+ChatBot &ChatBot::operator=(ChatBot &&source) {
+
+    std::cout << "ChatBot Move Assignment Operator (5)" << std::endl;
+
+    if (this == &source)
         return *this;
-    }
   
     delete _image;
     _chatLogic = source._chatLogic;
